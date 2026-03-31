@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PropCompare · Rental Property Investment Tool</title>
+  <meta name="description" content="Compare rental properties side-by-side with cap rate, cash-on-cash return, DSCR, and 5-year projections." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">⬡</span>
+        <span class="logo-text">PropCompare</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link active">Compare</a>
+        <a href="guide.html" class="nav-link">Guide</a>
+        <a href="https://github.com/aroan518/Finance-Project" class="nav-link nav-link--github" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-eyebrow">Investment Analysis Tool</div>
+      <h1>Compare Rental Properties<br>with <em>clarity</em></h1>
+      <p class="hero-sub">
+        Model cap rates, cash-on-cash returns, DSCR, and 5-year projections.
+        Add any number of properties and instantly see which deal wins.
+      </p>
+    </section>
+
+    <!-- Summary Bar -->
+    <div class="summary-bar" id="summary-bar"></div>
+
+    <!-- Controls -->
+    <div class="controls-bar">
+      <div class="controls-bar-inner">
+        <button class="btn btn-primary" id="btn-add">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Property
+        </button>
+        <span class="controls-sep"></span>
+        <span class="sort-label">Sort by</span>
+        <select class="sort-select" id="sort-select">
+          <option value="cap_rate">Cap Rate</option>
+          <option value="cash_on_cash">Cash-on-Cash Return</option>
+          <option value="monthly_cf">Monthly Cash Flow</option>
+          <option value="dscr">DSCR</option>
+          <option value="noi">NOI</option>
+        </select>
+        <button class="btn btn-secondary" id="btn-clear">Clear All</button>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <section class="properties-section">
+      <div class="properties-grid" id="properties-grid"></div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="compare-section hidden" id="compare-section">
+      <h2>Side-by-Side Comparison</h2>
+      <p class="section-sub">
+        <span style="color:var(--green)">■ Best</span> &nbsp;
+        <span style="color:var(--red)">■ Worst</span> &nbsp;
+        <span style="color:var(--text-2)">■ Middle</span>
+        &nbsp;— ranked per metric across your portfolio.
+      </p>
+      <div class="compare-table-wrap" id="compare-table-wrap"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-note">PropCompare · Open-source rental investment analysis · <a href="https://github.com/aroan518/Finance-Project">GitHub</a></p>
+      <p class="footer-disclaimer">For informational purposes only. Not financial advice.</p>
+    </div>
+  </footer>
+
+  <!-- Add / Edit Modal -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Add Property</h2>
+        <button class="modal-close" id="btn-close-modal" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="prop-form" onsubmit="return false">
+
+          <div class="form-section-title">Property Info</div>
+          <div class="form-grid">
+            <div class="form-group span-2">
+              <label for="f-name">Property Name *</label>
+              <input type="text" id="f-name" placeholder="e.g. Maple Street Duplex" required />
+            </div>
+            <div class="form-group span-2">
+              <label for="f-address">Address</label>
+              <input type="text" id="f-address" placeholder="123 Main St, City, State" />
+            </div>
+          </div>
+
+          <div class="form-section-title">Financing</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f-purchase_price">Purchase Price *</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-purchase_price" placeholder="350000" min="0" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-down_payment_pct">Down Payment</label>
+              <div class="input-suffix-group">
+                <input type="number" id="f-down_payment_pct" placeholder="20" min="0" max="100" step="0.5" />
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-interest_rate">Interest Rate</label>
+              <div class="input-suffix-group">
+                <input type="number" id="f-interest_rate" placeholder="6.75" min="0" max="30" step="0.125" />
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-loan_term">Loan Term (years)</label>
+              <input type="number" id="f-loan_term" placeholder="30" min="1" max="40" />
+            </div>
+            <div class="form-group">
+              <label for="f-closing_costs">Closing Costs</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-closing_costs" placeholder="8500" min="0" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-rehab_costs">Rehab / Repairs</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-rehab_costs" placeholder="0" min="0" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section-title">Income</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f-monthly_rent">Monthly Rent *</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-monthly_rent" placeholder="2400" min="0" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-vacancy_rate">Vacancy Rate</label>
+              <div class="input-suffix-group">
+                <input type="number" id="f-vacancy_rate" placeholder="5" min="0" max="100" step="0.5" />
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+            <div class="form-group span-2">
+              <label for="f-other_income">Other Income / month (laundry, parking…)</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-other_income" placeholder="0" min="0" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section-title">Annual Expenses</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f-property_tax">Property Tax / yr</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-property_tax" placeholder="4800" min="0" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-insurance">Insurance / yr</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-insurance" placeholder="1500" min="0" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-maintenance">Maintenance / yr</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-maintenance" placeholder="2000" min="0" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-management_pct">Property Mgmt</label>
+              <div class="input-suffix-group">
+                <input type="number" id="f-management_pct" placeholder="8" min="0" max="100" step="0.5" />
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-hoa">HOA / yr</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-hoa" placeholder="0" min="0" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-utilities">Utilities / yr</label>
+              <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="f-utilities" placeholder="0" min="0" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section-title">Projection Assumptions</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f-appreciation_rate">Annual Appreciation</label>
+              <div class="input-suffix-group">
+                <input type="number" id="f-appreciation_rate" placeholder="3" min="0" max="20" step="0.1" />
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-cancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-save">Save Property</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
