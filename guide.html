@@ -4,152 +4,157 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Metrics Guide · PropCompare</title>
-  <meta name="description" content="Learn how to interpret cap rate, cash-on-cash return, DSCR, GRM and other key rental property metrics." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">
-        <span class="logo-mark">⬡</span>
-        <span class="logo-text">PropCompare</span>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo"><span class="logo-mark">⬡</span><span class="logo-text">PropCompare</span></a>
+    <nav class="site-nav">
+      <a href="index.html" class="nav-link">Compare</a>
+      <a href="guide.html" class="nav-link active">Metrics Guide</a>
+      <a href="https://github.com/aroan518/Finance-Project" class="nav-link nav-link--github" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
       </a>
-      <nav class="site-nav">
-        <a href="index.html" class="nav-link">Compare</a>
-        <a href="guide.html" class="nav-link active">Guide</a>
-        <a href="https://github.com/aroan518/Finance-Project" class="nav-link nav-link--github" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub
-        </a>
-      </nav>
-    </div>
-  </header>
+    </nav>
+  </div>
+</header>
 
-  <main class="site-main">
-    <section class="hero">
-      <div class="hero-eyebrow">Learn the Metrics</div>
-      <h1>Rental Investment<br><em>Metrics Guide</em></h1>
-      <p class="hero-sub">Understanding the numbers behind every deal — from cap rate to DSCR and beyond.</p>
-    </section>
+<main class="site-main">
+  <section class="hero">
+    <div class="hero-eyebrow">Learn the Metrics</div>
+    <h1>Investment Metrics<br><em>Explained</em></h1>
+    <p class="hero-sub">Every number PropCompare calculates — what it means, how it's computed, and what makes a deal good or bad.</p>
+  </section>
 
-    <div style="max-width:860px;margin:0 auto;padding:0 24px 80px">
-      <div style="display:grid;gap:20px">
+  <div style="max-width:860px;margin:0 auto;padding:0 24px 80px;display:grid;gap:20px">
 
-        <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
-          <div style="background:var(--bg-3);padding:16px 24px;border-bottom:1px solid var(--border)">
-            <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">Return Metrics</span>
-          </div>
-          <div style="padding:24px;display:grid;gap:24px">
+    <!-- Returns -->
+    <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+      <div style="background:var(--bg-3);padding:14px 24px;border-bottom:1px solid var(--border)">
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">Return Metrics</span>
+      </div>
+      <div style="padding:24px;display:grid;gap:22px">
 
-            <div>
-              <h3 style="font-family:var(--font-display);font-size:22px;color:var(--text);margin-bottom:8px">Cap Rate</h3>
-              <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">
-                The capitalization rate shows your annual return if you bought the property all cash.
-                Calculated as <strong style="color:var(--text)">NOI ÷ Purchase Price</strong>.
-              </p>
-              <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
-                <span style="color:var(--green)">≥7%</span> Excellent &nbsp;·&nbsp;
-                <span style="color:var(--gold)">5–7%</span> Good &nbsp;·&nbsp;
-                <span style="color:var(--red)">&lt;5%</span> Review carefully
-              </div>
-            </div>
-
-            <div>
-              <h3 style="font-family:var(--font-display);font-size:22px;color:var(--text);margin-bottom:8px">Cash-on-Cash Return</h3>
-              <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">
-                Measures annual cash flow vs. the actual cash you invested (down payment + closing + rehab).
-                Formula: <strong style="color:var(--text)">Annual Cash Flow ÷ Total Cash Invested</strong>.
-              </p>
-              <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
-                <span style="color:var(--green)">≥8%</span> Excellent &nbsp;·&nbsp;
-                <span style="color:var(--gold)">5–8%</span> Good &nbsp;·&nbsp;
-                <span style="color:var(--red)">&lt;5%</span> Thin margins
-              </div>
-            </div>
-
-            <div>
-              <h3 style="font-family:var(--font-display);font-size:22px;color:var(--text);margin-bottom:8px">Gross Rent Multiplier (GRM)</h3>
-              <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">
-                A quick filter: <strong style="color:var(--text)">Purchase Price ÷ Annual Gross Rent</strong>.
-                Lower is better — how many years of rent to cover the price.
-              </p>
-              <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
-                <span style="color:var(--green)">≤10x</span> Strong &nbsp;·&nbsp;
-                <span style="color:var(--gold)">10–15x</span> Moderate &nbsp;·&nbsp;
-                <span style="color:var(--red)">&gt;15x</span> Expensive
-              </div>
-            </div>
-
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">Cap Rate</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">Unlevered return assuming an all-cash purchase. Formula: <strong style="color:var(--text)">NOI ÷ Purchase Price</strong>. Ignores financing so it's useful for comparing deals apples-to-apples regardless of how you finance them.</p>
+          <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:11px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
+            <span style="color:var(--green)">≥7%</span> Excellent &nbsp;·&nbsp; <span style="color:var(--gold)">5–7%</span> Good &nbsp;·&nbsp; <span style="color:var(--red)">&lt;5%</span> Review carefully
           </div>
         </div>
 
-        <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
-          <div style="background:var(--bg-3);padding:16px 24px;border-bottom:1px solid var(--border)">
-            <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">Risk Metrics</span>
-          </div>
-          <div style="padding:24px;display:grid;gap:24px">
-
-            <div>
-              <h3 style="font-family:var(--font-display);font-size:22px;color:var(--text);margin-bottom:8px">DSCR — Debt Service Coverage Ratio</h3>
-              <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">
-                How well your NOI covers the mortgage: <strong style="color:var(--text)">NOI ÷ Annual Debt Service</strong>.
-                Lenders typically require ≥1.25. Below 1.0 means negative cash flow.
-              </p>
-              <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
-                <span style="color:var(--green)">≥1.3x</span> Comfortable &nbsp;·&nbsp;
-                <span style="color:var(--gold)">1.0–1.3x</span> Tight &nbsp;·&nbsp;
-                <span style="color:var(--red)">&lt;1.0x</span> Negative cash flow
-              </div>
-            </div>
-
-            <div>
-              <h3 style="font-family:var(--font-display);font-size:22px;color:var(--text);margin-bottom:8px">Break-Even Ratio</h3>
-              <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">
-                The percentage of income needed to cover all expenses + debt:
-                <strong style="color:var(--text)">(OpEx + Debt Service) ÷ Gross Income</strong>.
-                Lower means you can absorb more vacancy before going underwater.
-              </p>
-              <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
-                <span style="color:var(--green)">≤75%</span> Safe buffer &nbsp;·&nbsp;
-                <span style="color:var(--gold)">75–90%</span> Watch closely &nbsp;·&nbsp;
-                <span style="color:var(--red)">&gt;90%</span> Risky
-              </div>
-            </div>
-
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">Cash-on-Cash Return</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">Annual cash flow relative to the actual dollars you deployed: <strong style="color:var(--text)">Annual Cash Flow ÷ (Down + Closing + Rehab)</strong>. This accounts for leverage and measures how hard your cash is working.</p>
+          <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:11px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
+            <span style="color:var(--green)">≥8%</span> Excellent &nbsp;·&nbsp; <span style="color:var(--gold)">5–8%</span> Good &nbsp;·&nbsp; <span style="color:var(--red)">&lt;5%</span> Thin margins
           </div>
         </div>
 
-        <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
-          <div style="background:var(--bg-3);padding:16px 24px;border-bottom:1px solid var(--border)">
-            <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">5-Year Projection</span>
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">IRR — Internal Rate of Return</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">The single most comprehensive return metric. IRR accounts for <em>all</em> cash flows over your hold period — annual income, principal paydown, and the net proceeds from sale — then calculates the annualized return rate at which the net present value equals zero. A higher IRR means a more efficient use of capital. PropCompare uses Newton-Raphson iteration to solve for IRR.</p>
+          <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:11px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
+            <span style="color:var(--green)">≥15%</span> Excellent &nbsp;·&nbsp; <span style="color:var(--gold)">10–15%</span> Good &nbsp;·&nbsp; <span style="color:var(--red)">&lt;10%</span> Below typical hurdle rate
           </div>
-          <div style="padding:24px">
-            <p style="color:var(--text-2);line-height:1.7">PropCompare models three wealth-building components over 5 years:</p>
-            <ul style="color:var(--text-2);line-height:1.9;margin-top:12px;padding-left:20px">
-              <li><strong style="color:var(--green)">Cash Flow</strong> — cumulative net income after all expenses and mortgage</li>
-              <li><strong style="color:var(--gold)">Equity Paydown</strong> — principal reduction on your loan each year</li>
-              <li><strong style="color:var(--text)">Appreciation</strong> — estimated value gain at your input appreciation rate</li>
-            </ul>
-            <p style="color:var(--text-3);font-size:13px;margin-top:16px;font-style:italic">
-              Projections are estimates. Not financial advice.
-            </p>
+        </div>
+
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">NOI — Net Operating Income</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">Effective gross income minus all operating expenses — <em>before</em> debt service. Formula: <strong style="color:var(--text)">Eff. Income − Total OpEx</strong>. This is the property's earning power independent of how it's financed.</p>
+        </div>
+
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">NPV — Net Present Value @ 10%</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">The present value of all future cash flows (including sale proceeds) discounted at a 10% hurdle rate, minus your initial investment. A positive NPV means the deal beats a 10% alternative investment. A negative NPV means it doesn't clear that bar.</p>
+        </div>
+
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">GRM — Gross Rent Multiplier</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">A quick first-pass filter: <strong style="color:var(--text)">Purchase Price ÷ Annual Gross Rent</strong>. Lower is better — it tells you how many years of gross rent to pay off the purchase. Doesn't account for expenses so never use it in isolation.</p>
+          <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:11px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
+            <span style="color:var(--green)">≤10x</span> Strong &nbsp;·&nbsp; <span style="color:var(--gold)">10–15x</span> Moderate &nbsp;·&nbsp; <span style="color:var(--red)">&gt;15x</span> Expensive
           </div>
         </div>
 
       </div>
     </div>
-  </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <p class="footer-note">PropCompare · Open-source rental investment analysis · <a href="https://github.com/aroan518/Finance-Project">GitHub</a></p>
-      <p class="footer-disclaimer">For informational purposes only. Not financial advice.</p>
+    <!-- Risk -->
+    <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+      <div style="background:var(--bg-3);padding:14px 24px;border-bottom:1px solid var(--border)">
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">Risk & Break-Even</span>
+      </div>
+      <div style="padding:24px;display:grid;gap:22px">
+
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">DSCR — Debt Service Coverage Ratio</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">How comfortably NOI covers your mortgage payments: <strong style="color:var(--text)">NOI ÷ Annual Debt Service</strong>. Lenders typically require ≥1.25. A DSCR below 1.0 means you're subsidizing the property from your own pocket every month.</p>
+          <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:11px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
+            <span style="color:var(--green)">≥1.3x</span> Comfortable &nbsp;·&nbsp; <span style="color:var(--gold)">1.0–1.3x</span> Tight &nbsp;·&nbsp; <span style="color:var(--red)">&lt;1.0x</span> Negative cash flow
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">Break-Even Ratio</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">The percentage of gross income consumed by expenses + debt service: <strong style="color:var(--text)">(OpEx + Debt Service) ÷ Effective Gross Income</strong>. Tells you how little margin you have — a lower number gives you more cushion against rent drops or unexpected costs.</p>
+          <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:11px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
+            <span style="color:var(--green)">≤75%</span> Healthy buffer &nbsp;·&nbsp; <span style="color:var(--gold)">75–90%</span> Tight &nbsp;·&nbsp; <span style="color:var(--red)">&gt;90%</span> Very risky
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">Break-Even Vacancy Rate</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">The vacancy percentage at which the property stops producing positive cash flow. If the market vacancy in your area is 8% and your break-even vacancy is 12%, you have a comfortable 4% buffer. Calculated by solving for the vacancy rate that drives annual cash flow to zero.</p>
+          <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:11px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
+            <span style="color:var(--green)">≥20%</span> Very safe &nbsp;·&nbsp; <span style="color:var(--gold)">10–20%</span> Moderate &nbsp;·&nbsp; <span style="color:var(--red)">&lt;10%</span> Fragile
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:21px;margin-bottom:7px">Expense Ratio</h3>
+          <p style="color:var(--text-2);line-height:1.7;margin-bottom:10px">Operating expenses as a percentage of effective gross income: <strong style="color:var(--text)">Total OpEx ÷ Effective Income</strong>. Multi-family properties typically run 35–50%; single-family 30–45%. A high expense ratio eats into your NOI and cash flow.</p>
+          <div style="background:var(--bg-3);border-left:3px solid var(--gold);padding:11px 16px;border-radius:0 8px 8px 0;font-family:var(--font-mono);font-size:13px">
+            <span style="color:var(--green)">≤40%</span> Lean &nbsp;·&nbsp; <span style="color:var(--gold)">40–55%</span> Normal &nbsp;·&nbsp; <span style="color:var(--red)">&gt;55%</span> Bloated
+          </div>
+        </div>
+
+      </div>
     </div>
-  </footer>
 
-  <script src="assets/js/main.js"></script>
+    <!-- Projection -->
+    <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+      <div style="background:var(--bg-3);padding:14px 24px;border-bottom:1px solid var(--border)">
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">Hold Period Projection</span>
+      </div>
+      <div style="padding:24px">
+        <p style="color:var(--text-2);line-height:1.7;margin-bottom:14px">PropCompare builds a year-by-year model that accounts for rent growth and appreciation:</p>
+        <ul style="color:var(--text-2);line-height:2;padding-left:20px;margin-bottom:16px">
+          <li><strong style="color:var(--green)">Cumulative Cash Flow</strong> — sum of annual after-debt cash flows with rent growing each year</li>
+          <li><strong style="color:var(--gold)">Equity Paydown</strong> — principal reduction on your loan via amortization</li>
+          <li><strong style="color:var(--text)">Appreciation</strong> — property value increase at your assumed annual rate</li>
+          <li><strong style="color:var(--text)">Total Return</strong> — all three combined (does not include sale costs)</li>
+          <li><strong style="color:var(--text-2)">Net Sale Proceeds</strong> — estimated sale price minus remaining loan balance and 6% selling costs</li>
+        </ul>
+        <p style="color:var(--text-3);font-size:13px;font-style:italic">All projections are estimates based on your inputs. Actual results will vary. Not financial advice.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-note">PropCompare · Open-source rental investment analysis · <a href="https://github.com/aroan518/Finance-Project">GitHub</a></p>
+    <p class="footer-disclaimer">For informational purposes only. Not financial advice.</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
 </body>
 </html>
