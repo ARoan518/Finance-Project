@@ -453,7 +453,7 @@
       ${row('Cap Rate',       c=>c.cap_rate,                 fmtPct)}
       ${row('Cash-on-Cash',   c=>c.cash_on_cash,             fmtPct)}
       ${row('Gross Rent Multiplier', c=>c.grm,                      v=>v.toFixed(1)+'x',true)}
-      ${row('Debt Service Coverage Ratio (DSCR)', c=>c.dscr,                     fmtX)}
+      ${row('Debt Service Coverage Ratio', c=>c.dscr,                     fmtX)}
       ${row('IRR',            c=>c.irr,                      fmtPct)}
       ${row('NPV @ 10% Hurdle Rate', c=>c.npv_10,                   fmt$)}
       ${sr('Risk / Break-Even')}
