@@ -51,20 +51,36 @@
 
   // ── IRR (Newton-Raphson) ─────────────────────────────────
   function calcIRR(cashflows) {
-    let rate = 0.1;
-    for (let i = 0; i < 100; i++) {
-      let npv = 0, dnpv = 0;
-      cashflows.forEach((cf, t) => {
-        const d = Math.pow(1 + rate, t);
-        npv  += cf / d;
-        dnpv -= t * cf / (d * (1 + rate));
-      });
-      if (Math.abs(dnpv) < 1e-10) break;
-      const nr = rate - npv / dnpv;
-      if (Math.abs(nr - rate) < 1e-7) { rate = nr; break; }
-      rate = nr;
+    // Newton-Raphson with multiple starting points to avoid converging
+    // on spurious roots (e.g. very negative rates).
+    function solve(start) {
+      let rate = start;
+      for (let i = 0; i < 200; i++) {
+        let npv = 0, dnpv = 0;
+        cashflows.forEach((cf, t) => {
+          const d = Math.pow(1 + rate, t);
+          npv  += cf / d;
+          dnpv -= t * cf / (d * (1 + rate));
+        });
+        if (Math.abs(dnpv) < 1e-10) return null;
+        const nr = rate - npv / dnpv;
+        if (!isFinite(nr)) return null;
+        if (Math.abs(nr - rate) < 1e-8) return nr;
+        rate = nr;
+      }
+      return rate;
     }
-    return isFinite(rate) && rate > -1 ? rate * 100 : null;
+    // Try several starting rates; keep best economically valid result
+    const candidates = [0.05, 0.10, 0.15, 0.20, 0.25, 0.01].map(solve);
+    const valid = candidates.filter(r => {
+      if (r == null || !isFinite(r) || r <= -1) return false;
+      const npvCheck = cashflows.reduce((s, cf, t) => s + cf / Math.pow(1 + r, t), 0);
+      return Math.abs(npvCheck) < 1.0;
+    });
+    if (!valid.length) return null;
+    // Prefer root closest to a realistic real-estate IRR range
+    valid.sort((a, b) => Math.abs(a - 0.15) - Math.abs(b - 0.15));
+    return valid[0] * 100;
   }
 
   // ── Core Calculator ──────────────────────────────────────
@@ -303,10 +319,10 @@
             ${cardRow('Total Invested',      fmt$(c.total_invest), 'color:var(--gold)')}
             ${cardRow('Monthly Cash Flow',   fmt$(c.monthly_cf),   `color:${c.monthly_cf>=0?'var(--green)':'var(--red)'}`)}
             ${cardRow('NOI / yr',            fmt$(c.noi))}
-            ${cardRow('DSCR',                fmtX(c.dscr),         `color:var(--${c.dscr>=1.3?'green':c.dscr>=1?'gold':'red'})`)}
-            ${cardRow('GRM',                 c.grm.toFixed(1)+'x')}
+            ${cardRow('Debt Service Coverage Ratio (DSCR)', fmtX(c.dscr),         `color:var(--${c.dscr>=1.3?'green':c.dscr>=1?'gold':'red'})`)}
+            ${cardRow('Gross Rent Multiplier (GRM)', c.grm.toFixed(1)+'x')}
             ${cardRow('Break-Even Vacancy',  fmtPct(c.break_even_vacancy), `color:var(--${ratingClass('break_even_vacancy',c.break_even_vacancy)==='good'?'green':ratingClass('break_even_vacancy',c.break_even_vacancy)==='warn'?'gold':'red'})`)}
-            ${cardRow('NPV @ 10% hurdle',    fmt$(c.npv_10),       `color:${c.npv_10>=0?'var(--green)':'var(--red)'}`)}
+            ${cardRow('NPV @ 10% Hurdle Rate',    fmt$(c.npv_10),       `color:${c.npv_10>=0?'var(--green)':'var(--red)'}`)}
           </div>
 
           <div class="card-tab-panel" data-card="${p.id}" data-panel="financing">
@@ -354,7 +370,7 @@
           <div class="card-tab-panel" data-card="${p.id}" data-panel="projection">
             <div class="proj-table-wrap">
               <table class="proj-table">
-                <thead><tr><th>Yr</th><th>Cum. CF</th><th>Equity</th><th>Appr.</th><th>Total Return</th></tr></thead>
+                <thead><tr><th>Yr</th><th>Cumulative Cash Flow</th><th>Equity</th><th>Appr.</th><th>Total Return</th></tr></thead>
                 <tbody>${c.proj.map(r=>`<tr>
                   <td>${r.year}</td>
                   <td style="color:${r.cumulative_cf>=0?'var(--green)':'var(--red)'}">${fmt$(r.cumulative_cf)}</td>
@@ -366,7 +382,7 @@
             </div>
             <div style="margin-top:14px">
               ${cardRow('IRR ('+p.hold_years+'-yr)', c.irr!=null?fmtPct(c.irr):'—', `color:var(--${ratingClass('irr',c.irr)==='good'?'green':ratingClass('irr',c.irr)==='warn'?'gold':'red'})`)}
-              ${cardRow('NPV @ 10%', fmt$(c.npv_10), `color:${c.npv_10>=0?'var(--green)':'var(--red)'}`)}
+              ${cardRow('NPV @ 10% Hurdle Rate', fmt$(c.npv_10), `color:${c.npv_10>=0?'var(--green)':'var(--red)'}`)}
               ${cardRow('Est. Value (Yr '+p.hold_years+')', fmt$(c.proj[c.proj.length-1].prop_value))}
               ${cardRow('Net Sale Proceeds', fmt$(c.proj[c.proj.length-1].sale_proceeds))}
             </div>
@@ -436,15 +452,15 @@
       ${row('Monthly CF',     c=>c.monthly_cf,               fmt$)}
       ${row('Cap Rate',       c=>c.cap_rate,                 fmtPct)}
       ${row('Cash-on-Cash',   c=>c.cash_on_cash,             fmtPct)}
-      ${row('GRM',            c=>c.grm,                      v=>v.toFixed(1)+'x',true)}
-      ${row('DSCR',           c=>c.dscr,                     fmtX)}
+      ${row('Gross Rent Multiplier (GRM)', c=>c.grm,                      v=>v.toFixed(1)+'x',true)}
+      ${row('Debt Service Coverage Ratio (DSCR)', c=>c.dscr,                     fmtX)}
       ${row('IRR',            c=>c.irr,                      fmtPct)}
-      ${row('NPV @ 10%',      c=>c.npv_10,                   fmt$)}
+      ${row('NPV @ 10% Hurdle Rate', c=>c.npv_10,                   fmt$)}
       ${sr('Risk / Break-Even')}
       ${row('Break-Even Ratio',   c=>c.break_even_ratio,     fmtPct,true)}
       ${row('Break-Even Vacancy', c=>c.break_even_vacancy,   fmtPct)}
       ${sr('Projection (hold period)')}
-      ${row('Cum. Cash Flow',  c=>c.proj[c.proj.length-1].cumulative_cf,  fmt$)}
+      ${row('Cumulative Cash Flow', c=>c.proj[c.proj.length-1].cumulative_cf,  fmt$)}
       ${row('Equity Paydown',  c=>c.proj[c.proj.length-1].equity_paydown, fmt$)}
       ${row('Appreciation',    c=>c.proj[c.proj.length-1].appreciation,   fmt$)}
       ${row('Total Return',    c=>c.proj[c.proj.length-1].total_return,   fmt$)}
