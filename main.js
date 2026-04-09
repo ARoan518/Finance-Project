@@ -29,6 +29,7 @@
       {
         property_type:'multi_family', name:'Maple Street Duplex', address:'1204 Maple St, Austin TX',
         sqft:2400, price_per_sqft:177, units:2,
+        bedrooms:4, bathrooms:2, basement:'yes', garage:'detached', year_built:1998, parking_spaces:2,
         purchase_price:425000, down_payment_pct:20, interest_rate:6.75, loan_term:30, loan_type:'conventional', points:0,
         closing_costs:8500, rehab_costs:15000,
         monthly_rent:3600, vacancy_rate:5, other_income:0, rent_growth:2,
@@ -39,6 +40,7 @@
       {
         property_type:'single_family', name:'Riverside Ranch', address:'88 River View Dr, Nashville TN',
         sqft:1850, price_per_sqft:154, units:1,
+        bedrooms:3, bathrooms:2, basement:'no', garage:'attached', year_built:2005, parking_spaces:2,
         purchase_price:285000, down_payment_pct:25, interest_rate:6.5, loan_term:30, loan_type:'conventional', points:0,
         closing_costs:5700, rehab_costs:5000,
         monthly_rent:2200, vacancy_rate:6, other_income:50, rent_growth:2,
@@ -284,7 +286,8 @@
     }
     grid.innerHTML = sorted.map((p, idx) => {
       const c = p._calc;
-      const typeLabel = p.property_type==='multi_family' ? `Multi-Family · ${p.units||'?'} units` : 'Single-Family';
+      const bedsLabel = p.bedrooms ? ` · ${p.bedrooms}bd/${p.bathrooms||'?'}ba` : '';
+      const typeLabel = (p.property_type==='multi_family' ? `Multi-Family · ${p.units||'?'} units` : 'Single-Family') + bedsLabel;
       return `
       <article class="property-card ${p.id===bestId?'best-pick':''}" data-id="${p.id}" style="animation-delay:${idx*0.06}s">
         <div class="card-header">
@@ -316,6 +319,12 @@
           <div class="card-tab-panel active" data-card="${p.id}" data-panel="overview">
             ${cardRow('Purchase Price',      fmt$(+p.purchase_price))}
             ${cardRow('Price / ft²',         fmtSqft(c.price_per_sqft_calc))}
+            ${p.bedrooms    ? cardRow('Bedrooms',      p.bedrooms) : ''}
+            ${p.bathrooms   ? cardRow('Bathrooms',     p.bathrooms) : ''}
+            ${p.year_built  ? cardRow('Year Built',    p.year_built) : ''}
+            ${p.basement    ? cardRow('Basement',      String(p.basement).charAt(0).toUpperCase()+String(p.basement).slice(1)) : ''}
+            ${p.garage      ? cardRow('Garage',        String(p.garage).charAt(0).toUpperCase()+String(p.garage).slice(1)) : ''}
+            ${p.parking_spaces ? cardRow('Parking Spaces', p.parking_spaces) : ''}
             ${cardRow('Total Invested',      fmt$(c.total_invest), 'color:var(--gold)')}
             ${cardRow('Monthly Cash Flow',   fmt$(c.monthly_cf),   `color:${c.monthly_cf>=0?'var(--green)':'var(--red)'}`)}
             ${cardRow('NOI / yr',            fmt$(c.noi))}
@@ -431,6 +440,12 @@
       ${row('Sq Ft',          (_,p)=>+p.sqft||0,             v=>v?v.toLocaleString():'—')}
       ${row('Units',          (_,p)=>+p.units||1,            v=>v)}
       ${row('Price / ft²',    c=>c.price_per_sqft_calc,      v=>fmtSqft(v),true)}
+      ${row('Bedrooms',       (_,p)=>+p.bedrooms||0,          v=>v||'—')}
+      ${row('Bathrooms',      (_,p)=>+p.bathrooms||0,         v=>v||'—')}
+      ${row('Year Built',     (_,p)=>+p.year_built||0,        v=>v||'—')}
+      ${row('Basement',       (_,p)=>p.basement||'—',         v=>v?String(v).charAt(0).toUpperCase()+String(v).slice(1):'—')}
+      ${row('Garage',         (_,p)=>p.garage||'—',           v=>v?String(v).charAt(0).toUpperCase()+String(v).slice(1):'—')}
+      ${row('Parking Spaces', (_,p)=>+p.parking_spaces||0,    v=>v||'—')}
       ${sr('Acquisition')}
       ${row('Purchase Price', (_,p)=>+p.purchase_price,      fmt$,true)}
       ${row('Down Payment',   c=>c.down,                     fmt$)}
@@ -471,6 +486,7 @@
   // ── Modal ─────────────────────────────────────────────────
   const ALL_FIELDS = [
     'property_type','name','address','sqft','price_per_sqft','units',
+    'bedrooms','bathrooms','basement','garage','year_built','parking_spaces',
     'purchase_price','down_payment_pct','interest_rate','loan_term','loan_type','points',
     'closing_costs','rehab_costs',
     'monthly_rent','vacancy_rate','other_income','rent_growth',
@@ -508,7 +524,7 @@
   }
 
   function getFormData() {
-    const textFields = ['property_type','name','address','loan_type'];
+    const textFields = ['property_type','name','address','loan_type','basement','garage'];
     const data = {};
     ALL_FIELDS.forEach(f => {
       const el = document.getElementById('f-'+f);
