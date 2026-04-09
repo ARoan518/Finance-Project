@@ -440,15 +440,14 @@
     wrap.innerHTML=`<table class="compare-table"><thead><tr><th>Metric</th>${sorted.map(p=>`<th style="color:${p._color}">${p._emoji} ${escHtml(p.name)}</th>`).join('')}</tr></thead><tbody>
       ${sr('Property')}
       ${row('Type',           (_,p)=>p.property_type==='multi_family'?'Multi-Family':'Single-Family',v=>v)}
-      ${row('Sq Ft',          (_,p)=>+p.sqft||0,             v=>v?v.toLocaleString():'—')}
-      ${row('Units',          (_,p)=>+p.units||1,            v=>v)}
-      ${row('Price / ft²',    c=>c.price_per_sqft_calc,      v=>fmtSqft(v),true)}
       ${row('Bedrooms',       (_,p)=>+p.bedrooms||0,          v=>v||'—')}
       ${row('Bathrooms',      (_,p)=>+p.bathrooms||0,         v=>v||'—')}
-      ${row('Year Built',     (_,p)=>+p.year_built||0,        v=>v||'—')}
       ${row('Basement',       (_,p)=>p.basement||'—',         v=>v?String(v).charAt(0).toUpperCase()+String(v).slice(1):'—')}
       ${row('Garage',         (_,p)=>p.garage||'—',           v=>v?String(v).charAt(0).toUpperCase()+String(v).slice(1):'—')}
       ${row('Parking Spaces', (_,p)=>+p.parking_spaces||0,    v=>v||'—')}
+      ${row('Year Built',     (_,p)=>+p.year_built||0,        v=>v||'—')}
+      ${row('Sq Ft',          (_,p)=>+p.sqft||0,              v=>v?v.toLocaleString():'—')}
+      ${row('Price / ft²',    c=>c.price_per_sqft_calc,       v=>fmtSqft(v),true)}
       ${sr('Acquisition')}
       ${row('Purchase Price', (_,p)=>+p.purchase_price,      fmt$,true)}
       ${row('Down Payment',   c=>c.down,                     fmt$)}
