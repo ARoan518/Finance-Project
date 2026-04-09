@@ -317,21 +317,24 @@
           </div>
 
           <div class="card-tab-panel active" data-card="${p.id}" data-panel="overview">
+            <div class="sub-section-label">Property Details</div>
             ${cardRow('Purchase Price',      fmt$(+p.purchase_price))}
             ${cardRow('Price / ft²',         fmtSqft(c.price_per_sqft_calc))}
-            ${p.bedrooms    ? cardRow('Bedrooms',      p.bedrooms) : ''}
-            ${p.bathrooms   ? cardRow('Bathrooms',     p.bathrooms) : ''}
-            ${p.year_built  ? cardRow('Year Built',    p.year_built) : ''}
-            ${p.basement    ? cardRow('Basement',      String(p.basement).charAt(0).toUpperCase()+String(p.basement).slice(1)) : ''}
-            ${p.garage      ? cardRow('Garage',        String(p.garage).charAt(0).toUpperCase()+String(p.garage).slice(1)) : ''}
+            ${p.sqft        ? cardRow('Square Footage',  (+p.sqft).toLocaleString() + ' ft²') : ''}
+            ${p.bedrooms    ? cardRow('Bedrooms',        p.bedrooms) : ''}
+            ${p.bathrooms   ? cardRow('Bathrooms',       p.bathrooms) : ''}
+            ${p.year_built  ? cardRow('Year Built',      p.year_built) : ''}
+            ${p.basement    ? cardRow('Basement',        String(p.basement).charAt(0).toUpperCase()+String(p.basement).slice(1)) : ''}
+            ${p.garage      ? cardRow('Garage',          String(p.garage).charAt(0).toUpperCase()+String(p.garage).slice(1)) : ''}
             ${p.parking_spaces ? cardRow('Parking Spaces', p.parking_spaces) : ''}
+            <div class="sub-section-label" style="margin-top:10px">Investment Summary</div>
             ${cardRow('Total Invested',      fmt$(c.total_invest), 'color:var(--gold)')}
             ${cardRow('Monthly Cash Flow',   fmt$(c.monthly_cf),   `color:${c.monthly_cf>=0?'var(--green)':'var(--red)'}`)}
             ${cardRow('NOI / yr',            fmt$(c.noi))}
-            ${cardRow('Debt Service Coverage Ratio (DSCR)', fmtX(c.dscr),         `color:var(--${c.dscr>=1.3?'green':c.dscr>=1?'gold':'red'})`)}
+            ${cardRow('Debt Service Coverage Ratio (DSCR)', fmtX(c.dscr), `color:var(--${c.dscr>=1.3?'green':c.dscr>=1?'gold':'red'})`)}
             ${cardRow('Gross Rent Multiplier (GRM)', c.grm.toFixed(1)+'x')}
             ${cardRow('Break-Even Vacancy',  fmtPct(c.break_even_vacancy), `color:var(--${ratingClass('break_even_vacancy',c.break_even_vacancy)==='good'?'green':ratingClass('break_even_vacancy',c.break_even_vacancy)==='warn'?'gold':'red'})`)}
-            ${cardRow('NPV @ 10% Hurdle Rate',    fmt$(c.npv_10),       `color:${c.npv_10>=0?'var(--green)':'var(--red)'}`)}
+            ${cardRow('NPV @ 10% Hurdle Rate', fmt$(c.npv_10), `color:${c.npv_10>=0?'var(--green)':'var(--red)'}`)}
           </div>
 
           <div class="card-tab-panel" data-card="${p.id}" data-panel="financing">
